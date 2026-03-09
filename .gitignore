@@ -1,0 +1,7 @@
+# ignore __pycache__ and .venv directories
+__pycache__/
+.venv/
+
+# ignore artifacts and logs
+artifacts/
+streamflow-run.log

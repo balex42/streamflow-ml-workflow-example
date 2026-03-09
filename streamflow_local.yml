@@ -1,0 +1,56 @@
+version: v1.0
+
+workflows:
+  ml-workflow:
+    type: cwl
+    config:
+      file: cwl/workflow.cwl
+      settings: inputs/input.yaml
+    bindings:
+      - step: /download
+        target:
+          model: docker-python
+          workdir: /workspace/ml_workflow
+      - step: /preprocess
+        target:
+          model: docker-python
+          workdir: /workspace/ml_workflow
+      - step: /train
+        target:
+          model: docker-pytorch
+          workdir: /workspace/ml_workflow
+      - step: /evaluate
+        target:
+          model: docker-pytorch
+          workdir: /workspace/ml_workflow
+      - step: /report
+        target:
+          model: docker-python
+          workdir: /workspace/ml_workflow
+
+models:
+  docker-python:
+    type: docker
+    config:
+      image: python:3.11
+      workdir: /workspace/ml_workflow
+      disableContentTrust: true
+      env:
+        - HOME=/tmp
+        - XDG_CACHE_HOME=/tmp/xdg-cache
+        - XDG_CONFIG_HOME=/tmp/xdg-config
+        - MPLCONFIGDIR=/tmp/matplotlib
+      volume:
+        - .:/workspace/ml_workflow
+  docker-pytorch:
+    type: docker
+    config:
+      image: pytorch/pytorch:2.4.0-cuda12.1-cudnn9-devel
+      workdir: /workspace/ml_workflow
+      disableContentTrust: true
+      env:
+        - HOME=/tmp
+        - XDG_CACHE_HOME=/tmp/xdg-cache
+        - XDG_CONFIG_HOME=/tmp/xdg-config
+      volume:
+        - .:/workspace/ml_workflow
