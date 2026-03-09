@@ -1,4 +1,5 @@
 # ML Workflow with StreamFlow and CWL
+
 This repository packages a complete ML pipeline (download → preprocess → train → evaluate → report) using
 [StreamFlow](https://streamflow.di.unito.it/) to orchestrate CWL tools inside containers. The default example trains a
 lightweight CNN on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) using PyTorch.
@@ -22,7 +23,8 @@ Local runtime state (virtualenv, StreamFlow state DB, caches) is ignored via `.g
 - Python 3.8+ with StreamFlow installed (`pip install streamflow`).
 - Network access to download CIFAR-10 and Python packages inside containers.
 
-This workflow was tested on Ubuntu 24.04 with Docker from the Ubuntu repository and Python 3.11 in a virtual environment created with `uv`.
+This workflow was tested on Ubuntu 24.04 with Docker from the Ubuntu repository and Python 3.11 in a virtual
+environment created with `uv`.
 
 ## Quick start
 
@@ -31,15 +33,16 @@ This workflow was tested on Ubuntu 24.04 with Docker from the Ubuntu repository 
    ```bash
    pip install streamflow
    ```
-   3. Kick off the workflow:
-      ```bash
-      streamflow run --outdir artifacts/final streamflow_local.yml
-      ```
-      or optionally include logs:
-      ```bash
-      set -o pipefail
-      streamflow run --outdir artifacts/final streamflow_local.yml 2>&1 | tee streamflow-run.log
-      ```
+3. Run the workflow:
+   ```bash
+   streamflow run --outdir artifacts/final streamflow_local.yml
+   ```
+
+   To capture logs as well:
+   ```bash
+   set -o pipefail
+   streamflow run --outdir artifacts/final streamflow_local.yml 2>&1 | tee streamflow-run.log
+   ```
 4. Results are written to:
    - `artifacts/models/model.pt` – trained PyTorch checkpoint.
    - `artifacts/results/metrics.json` – evaluation metrics.
@@ -49,6 +52,8 @@ This workflow was tested on Ubuntu 24.04 with Docker from the Ubuntu repository 
 
 ## GPU notes
 
-- The local config is **CPU-default** to work on machines without NVIDIA Container Toolkit.
-- To enable GPU execution, you need NVIDIA Container Toolkit configured for your runtime (Docker or Podman), then add back a `gpus: all` block (and optional `NVIDIA_*` env vars) under the `docker-pytorch` model in `streamflow_local.yml`.
+- The local config is **CPU-first** so it works on machines without NVIDIA Container Toolkit.
+- To enable GPU execution, configure NVIDIA Container Toolkit for your runtime (Docker or Podman), then add back a
+   `gpus: all` block and any optional `NVIDIA_*` environment variables under the `docker-pytorch` model in
+   `streamflow_local.yml`.
 
