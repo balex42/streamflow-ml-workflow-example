@@ -31,9 +31,7 @@ This workflow was tested on Ubuntu 24.04 with Docker from the Ubuntu repository 
 2. Install StreamFlow:
    ```bash
    pip install streamflow
-   ```bash
-      pip install streamflow
-      ```
+   ```
    3. Kick off the workflow:
       ```bash
       streamflow run --outdir artifacts/final streamflow_local.yml
