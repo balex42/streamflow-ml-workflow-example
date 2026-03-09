@@ -1,8 +1,7 @@
 # ML Workflow with StreamFlow and CWL
-
 This repository packages a complete ML pipeline (download → preprocess → train → evaluate → report) using
 [StreamFlow](https://streamflow.di.unito.it/) to orchestrate CWL tools inside containers. The default example trains a
-lightweight CNN on CIFAR-10 using PyTorch.
+lightweight CNN on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) using PyTorch.
 
 ## Repository layout
 
